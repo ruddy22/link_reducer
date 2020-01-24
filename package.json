@@ -1,0 +1,21 @@
+{
+  "name": "link_reducer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ruddy22/link_reducer.git",
+  "author": "Alexey Petrov <ruddy22@mail.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1",
+    "knex": "0.20.8",
+    "sqlite3": "4.1.1"
+  },
+  "devDependencies": {
+    "jest": "25.1.0"
+  },
+  "scripts": {
+    "knex": "knex",
+    "jest": "jest",
+    "start": "node index.js"
+  }
+}
