@@ -6,6 +6,7 @@
 
 const express = require('express');
 const _ = require('lodash');
+const bodyParser = require('body-parser');
 const shortId = require('shortid');
 const validUrl = require('valid-url');
 const knexOptions = require('./knexfile');
@@ -18,6 +19,7 @@ const LINKS = 'links';
 
 // app
 const app = express();
+app.use(bodyParser.json());
 
 // starts server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
@@ -55,22 +57,30 @@ const processUrl = async (url) => {
   };
 };
 
-app.post('/create_link/:url', async (req, res) => {
-  const url = req.params.url || '';
-  const result = validUrl.isWebUri(url)
-    ? await processUrl(url)
-    : makeAnErrorObject('Invalid url.');
+app.post('/new', async (req, res) => {
+  const url = req.body.url || '';
+  console.log(req.body);
 
-  res.json(result);
+  if (validUrl.isUri(url)) {
+    res.status(200).json(await processUrl(url));
+  } else {
+    res.status(401).json(makeAnErrorObject('Invalid url.'));
+  }
 });
 
 app.get('/:code', async (req, res) => {
   const linkCode = req.params.code;
-  const result = await knex(LINKS).first('original_link').where({ generated_code: linkCode });
+  let result =  null;
+
+  try {
+    result = await knex(LINKS).first('original_link').where({ generated_code: linkCode });
+  } catch (err) {
+    res.status(401).json(err.message);
+  }
 
   if (result) {
     res.redirect(result.link);
   } else {
-    res.json(makeAnErrorObject('Link not found.'));
+    res.status(404).json(makeAnErrorObject('Link not found.'));
   }
 });
