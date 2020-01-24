@@ -2,7 +2,7 @@ const yargs = require('yargs');
 const request = require('request-promise-native');
 const validUrl = require('valid-url');
 
-const argv = yargs
+const args = yargs
   .option('link', {
     description: 'link to be reduced',
     alias: 'l',
@@ -17,26 +17,29 @@ const argv = yargs
   })
   .argv;
 
-if (!validUrl.isUri(argv.url)) {
+if (!validUrl.isUri(args.url)) {
   console.log('Invalid url.');
   process.exit(1);
 }
 
-const jsonData = {
-  url: argv.link
-};
-
 const options = {
   method: 'post',
   json: true,
-  body: jsonData,
-  url: argv.url,
+  body: {
+    url: args.link
+  },
+  url: args.url,
 };
 
 request(options)
-       .then((err, httpResponse, body) => {
-         console.log('err', err);
-         console.log('hr ', httpResponse);
-         console.log('body ', body);
-       })
-       .catch((err) => console.log('err 1', err.message));
+  .then((body) => {
+    if (body.status === 'ok') {
+      console.log(body);
+      console.log(body.data.short);
+    }
+
+    if (body.status === 'error') {
+      console.error('Got Error: ', body.errorText);
+    }
+  })
+  .catch((err) => console.error('Something went wrong', err.message));
