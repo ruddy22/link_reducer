@@ -1,9 +1,11 @@
-// Update with your config settings.
+/**
+ * @module knexfile.js
+ */
 
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: './backend/db/dev.sqlite3',
+    filename: './backend/dev.sqlite3',
   },
   useNullAsDefault: true,
 };

@@ -1,15 +1,21 @@
 const links = 'links';
 
-exports.up = (knex) => {
-  return knex.schema.createTableIfNotExists(links, (table) => {
-    table.increments();
-    table.string('original_link');
-    table.string('short_link');
-    table.string('generated_code');
-    table.integer('transition_count');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
-  })
+exports.up = async (knex) => {
+  const exists = await knex.schema.hasTable(links);
+
+  if (!exists) {
+    return knex.schema.createTable(links, (table) => {
+      table.increments();
+      table.string('original_link');
+      table.string('short_link');
+      table.string('generated_code');
+      table.integer('transition_count');
+      table.timestamp('created_at').defaultTo(knex.fn.now());
+      table.timestamp('updated_at').defaultTo(knex.fn.now());
+    });
+  }
+
+  return null;
 };
 
 exports.down = (knex) => {
