@@ -9,15 +9,15 @@ const args = yargs
     type: 'string',
     default: '',
   })
-  .option('url', {
+  .option('address', {
     description: 'Full server address. For example: http://localhost:4000',
-    alias: 'u',
+    alias: 'a',
     type: 'string',
     default: '',
   })
   .argv;
 
-if (!validUrl.isUri(args.url)) {
+if (!validUrl.isUri(args.address)) {
   console.log('Invalid url.');
   process.exit(1);
 }
@@ -28,13 +28,12 @@ const options = {
   body: {
     url: args.link
   },
-  url: args.url,
+  url: args.address,
 };
 
 request(options)
   .then((body) => {
     if (body.status === 'ok') {
-      console.log(body);
       console.log(body.data.short);
     }
 

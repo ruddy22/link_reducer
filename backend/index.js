@@ -66,7 +66,7 @@ app.get('/', async (req, res) => {
 });
 
 // create new link
-app.post('/new', async (req, res) => {
+app.post('/', async (req, res) => {
   const url = req.body.url || '';
 
   if (validUrl.isUri(url)) {
