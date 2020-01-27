@@ -4,7 +4,7 @@ const validUrl = require('valid-url');
 
 const args = yargs
   .option('link', {
-    description: 'link to be reduced',
+    description: 'link which will be reduced',
     alias: 'l',
     type: 'string',
     default: '',
