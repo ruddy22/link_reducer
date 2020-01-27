@@ -8,15 +8,27 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 const routes = require('./routes');
+require('dotenv').config();
 
-// app
+/**
+ * app initialization
+ */
 const app = express();
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, './views'));
 
-// router
+/**
+ * constants
+ */
+const PORT = process.env.PORT || 5000;
+
+/**
+ * router
+ */
 routes(app);
 
-// starts server
+/**
+ * starts server
+ */
 app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));

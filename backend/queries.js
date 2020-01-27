@@ -5,8 +5,11 @@
 
 const Knex = require('knex');
 const options = require('../knexfile');
-
 const knex = Knex(options);
+
+/**
+ * constants
+ */
 const LINKS = 'links';
 const ORIGINAL_LINK = 'original_link';
 const TRANSITION_COUNT = 'transition_count';
@@ -70,7 +73,7 @@ const getLinkAndUpdate = async (code) => {
     })
     .catch(trx.rollback);
 
-  return result[TRANSITION_COUNT];
+  return result[ORIGINAL_LINK];
 };
 
 /**

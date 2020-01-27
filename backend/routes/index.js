@@ -7,9 +7,12 @@ const shortId = require('shortid');
 const validUrl = require('valid-url');
 const queries = require('../queries');
 
-const PORT = 5000;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
+/**
+ * constants
+ */
+const PORT = process.env.PORT || 5000;
+const ADDRESS = process.env.HOST || 'localhost';
+const PROTOCOL = process.env.PROTOCOL || 'http';
 
 /**
  * returns an error object
