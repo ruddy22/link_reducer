@@ -6,7 +6,7 @@
 
 const bodyParser = require('body-parser');
 const express = require('express');
-const _ = require('lodash');
+const path = require('path');
 const shortId = require('shortid');
 const validUrl = require('valid-url');
 const queries = require('./queries');
@@ -18,6 +18,8 @@ const PROTOCOL = 'http';
 // app
 const app = express();
 app.use(bodyParser.json());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './views'));
 
 // starts server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
@@ -60,9 +62,8 @@ const processUrl = async (url) => {
 // index page
 // TODO
 app.get('/', async (req, res) => {
-  // const result = await knex(LINKS).select('*');
-
-  res.json({ message: 'Hello world', rowsInTable: result });
+  const info = await queries.getStat();
+  res.render('index', { info });
 });
 
 // create new link

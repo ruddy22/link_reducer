@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Link Reducer - Statistics</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+  </head>
+  <body>
+    <br/>
+    <div class="container">
+      <div class="alert alert-primary" role="alert">
+        <h4 class="alert-heading">Hello, User!</h4>
+        <br/>
+        <p>
+          This is <b>Link Reducer!</b> Test task for Wonderobe.
+        </p>
+        <hr/>
+        <h6 class="alert-heading">Short task description:</h4>
+        <p>
+          Implement a service for shortening links (for example, bit.ly, oo.gl).
+          When a link is first created, the user is given a unique user ID for
+          the link. When you click on the shortened link, the user is redirected
+          to original link, for each link the number of clicks is saved.
+        </p>
+      </div>
+      <br/>
+      <div class="alert alert-secondary" role="alert">
+        <h6 class="alert-heading">Portion of statistics:</h4>
+        <% if (info.length) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Link</th>
+                <th scope="col">Transition Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < info.length; i += 1) { %>
+                 <tr>
+                   <td>
+                     <%= i + 1 %>
+                   </td>
+                   <td>
+                     <%= info[i].original_link %>
+                   </td>
+                   <td>
+                     <%= info[i].transition_count %>
+                   </td>
+                 </tr>
+              <% } %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div>Sorry! You do not have any statistics.</div>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>

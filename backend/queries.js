@@ -8,6 +8,8 @@ const options = require('../knexfile');
 
 const knex = Knex(options);
 const LINKS = 'links';
+const ORIGINAL_LINK = 'original_link';
+const TRANSITION_COUNT = 'transition_count';
 
 /**
  * writes link info to db
@@ -17,7 +19,7 @@ const LINKS = 'links';
 const findOrCreate = async (link) => {
   const trx = await knex.transaction();
   const result = await trx(LINKS)
-    .first(['original_link', 'short_link'])
+    .first([ORIGINAL_LINK, 'short_link'])
     .where({ original_link: link.original_link })
     .then((record) => {
       if (record) {
@@ -47,10 +49,9 @@ const findOrCreate = async (link) => {
  * @returns {Promise<String>}
  */
 const getLinkAndUpdate = async (code) => {
-  const originalLink = 'original_link';
   const trx = await knex.transaction();
   const result = await trx(LINKS)
-    .first([originalLink, 'transition_count'])
+    .first([ORIGINAL_LINK, TRANSITION_COUNT])
     .where({ generated_code: code })
     .then((record) => {
       if (!record) {
@@ -69,13 +70,20 @@ const getLinkAndUpdate = async (code) => {
     })
     .catch(trx.rollback);
 
-  return result[originalLink];
+  return result[TRANSITION_COUNT];
 };
+
+/**
+ * returns some statistics
+ * @returns {Promise<Object>}
+ */
+const getStat = () => knex(LINKS).select([ORIGINAL_LINK, TRANSITION_COUNT]);
 
 /**
  * module api
  */
 module.exports = {
   findOrCreate,
+  getStat,
   getLinkAndUpdate,
 };
